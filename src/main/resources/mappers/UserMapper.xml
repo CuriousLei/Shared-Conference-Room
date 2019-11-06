@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ximingxing.blog.server.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.ximingxing.blog.server.pojo.User">
+        <id column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="user_alias" jdbcType="VARCHAR" property="userAlias"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_passwd" jdbcType="VARCHAR" property="userPasswd"/>
+        <result column="user_desc" jdbcType="VARCHAR" property="userDesc"/>
+        <result column="user_role" jdbcType="TINYINT" property="userRole"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    user_id, user_alias, user_name, user_passwd, user_desc, user_role
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sr_user
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByUsernameAndPassword" resultType="com.ximingxing.blog.server.pojo.User">
+        select
+        <include refid="Base_Column_List"/>
+        from sr_user
+        where user_name=#{username} and user_passwd=#{passwd}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sr_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.ximingxing.blog.server.pojo.User">
+    insert into sr_user (user_id, user_alias, user_name, 
+      user_passwd, user_desc, user_role
+      )
+    values (#{userId,jdbcType=INTEGER}, #{userAlias,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{userPasswd,jdbcType=VARCHAR}, #{userDesc,jdbcType=VARCHAR}, #{userRole,jdbcType=TINYINT}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.ximingxing.blog.server.pojo.User">
+        insert into sr_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userAlias != null">
+                user_alias,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="userPasswd != null">
+                user_passwd,
+            </if>
+            <if test="userDesc != null">
+                user_desc,
+            </if>
+            <if test="userRole != null">
+                user_role,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="userAlias != null">
+                #{userAlias,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPasswd != null">
+                #{userPasswd,jdbcType=VARCHAR},
+            </if>
+            <if test="userDesc != null">
+                #{userDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="userRole != null">
+                #{userRole,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ximingxing.blog.server.pojo.User">
+        update sr_user
+        <set>
+            <if test="userAlias != null">
+                user_alias = #{userAlias,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPasswd != null">
+                user_passwd = #{userPasswd,jdbcType=VARCHAR},
+            </if>
+            <if test="userDesc != null">
+                user_desc = #{userDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="userRole != null">
+                user_role = #{userRole,jdbcType=TINYINT},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ximingxing.blog.server.pojo.User">
+    update sr_user
+    set user_alias = #{userAlias,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_passwd = #{userPasswd,jdbcType=VARCHAR},
+      user_desc = #{userDesc,jdbcType=VARCHAR},
+      user_role = #{userRole,jdbcType=TINYINT}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

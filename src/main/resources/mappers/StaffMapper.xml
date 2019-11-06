@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ximingxing.blog.server.dao.StaffMapper">
+  <resultMap id="BaseResultMap" type="com.ximingxing.blog.server.pojo.Staff">
+    <id column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <result column="conference_id" jdbcType="INTEGER" property="conferenceId" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="staff_desc" jdbcType="VARCHAR" property="staffDesc" />
+    <result column="staff_confs" jdbcType="VARCHAR" property="staffConfs" />
+    <result column="staff_status" jdbcType="TINYINT" property="staffStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    staff_id, conference_id, staff_name, staff_desc, staff_confs, staff_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sr_staff
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sr_staff
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ximingxing.blog.server.pojo.Staff">
+    insert into sr_staff (staff_id, conference_id, staff_name, 
+      staff_desc, staff_confs, staff_status
+      )
+    values (#{staffId,jdbcType=INTEGER}, #{conferenceId,jdbcType=INTEGER}, #{staffName,jdbcType=VARCHAR}, 
+      #{staffDesc,jdbcType=VARCHAR}, #{staffConfs,jdbcType=VARCHAR}, #{staffStatus,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ximingxing.blog.server.pojo.Staff">
+    insert into sr_staff
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="staffId != null">
+        staff_id,
+      </if>
+      <if test="conferenceId != null">
+        conference_id,
+      </if>
+      <if test="staffName != null">
+        staff_name,
+      </if>
+      <if test="staffDesc != null">
+        staff_desc,
+      </if>
+      <if test="staffConfs != null">
+        staff_confs,
+      </if>
+      <if test="staffStatus != null">
+        staff_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="staffId != null">
+        #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="conferenceId != null">
+        #{conferenceId,jdbcType=INTEGER},
+      </if>
+      <if test="staffName != null">
+        #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffDesc != null">
+        #{staffDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="staffConfs != null">
+        #{staffConfs,jdbcType=VARCHAR},
+      </if>
+      <if test="staffStatus != null">
+        #{staffStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ximingxing.blog.server.pojo.Staff">
+    update sr_staff
+    <set>
+      <if test="conferenceId != null">
+        conference_id = #{conferenceId,jdbcType=INTEGER},
+      </if>
+      <if test="staffName != null">
+        staff_name = #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffDesc != null">
+        staff_desc = #{staffDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="staffConfs != null">
+        staff_confs = #{staffConfs,jdbcType=VARCHAR},
+      </if>
+      <if test="staffStatus != null">
+        staff_status = #{staffStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ximingxing.blog.server.pojo.Staff">
+    update sr_staff
+    set conference_id = #{conferenceId,jdbcType=INTEGER},
+      staff_name = #{staffName,jdbcType=VARCHAR},
+      staff_desc = #{staffDesc,jdbcType=VARCHAR},
+      staff_confs = #{staffConfs,jdbcType=VARCHAR},
+      staff_status = #{staffStatus,jdbcType=TINYINT}
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ximingxing.blog.server.dao.RecordMapper">
+  <resultMap id="BaseResultMap" type="com.ximingxing.blog.server.pojo.Record">
+    <id column="conference_id" jdbcType="INTEGER" property="conferenceId" />
+    <result column="room_id" jdbcType="INTEGER" property="roomId" />
+    <result column="conference_name" jdbcType="VARCHAR" property="conferenceName" />
+    <result column="conference_desc" jdbcType="VARCHAR" property="conferenceDesc" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="conference_start" jdbcType="TIMESTAMP" property="conferenceStart" />
+    <result column="conference_end" jdbcType="TIMESTAMP" property="conferenceEnd" />
+    <result column="room_status" jdbcType="TINYINT" property="roomStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    conference_id, room_id, conference_name, conference_desc, user_id, conference_start, 
+    conference_end, room_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from conf_record
+    where conference_id = #{conferenceId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from conf_record
+    where conference_id = #{conferenceId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ximingxing.blog.server.pojo.Record">
+    insert into conf_record (conference_id, room_id, conference_name, 
+      conference_desc, user_id, conference_start, 
+      conference_end, room_status)
+    values (#{conferenceId,jdbcType=INTEGER}, #{roomId,jdbcType=INTEGER}, #{conferenceName,jdbcType=VARCHAR}, 
+      #{conferenceDesc,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{conferenceStart,jdbcType=TIMESTAMP}, 
+      #{conferenceEnd,jdbcType=TIMESTAMP}, #{roomStatus,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ximingxing.blog.server.pojo.Record">
+    insert into conf_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="conferenceId != null">
+        conference_id,
+      </if>
+      <if test="roomId != null">
+        room_id,
+      </if>
+      <if test="conferenceName != null">
+        conference_name,
+      </if>
+      <if test="conferenceDesc != null">
+        conference_desc,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="conferenceStart != null">
+        conference_start,
+      </if>
+      <if test="conferenceEnd != null">
+        conference_end,
+      </if>
+      <if test="roomStatus != null">
+        room_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="conferenceId != null">
+        #{conferenceId,jdbcType=INTEGER},
+      </if>
+      <if test="roomId != null">
+        #{roomId,jdbcType=INTEGER},
+      </if>
+      <if test="conferenceName != null">
+        #{conferenceName,jdbcType=VARCHAR},
+      </if>
+      <if test="conferenceDesc != null">
+        #{conferenceDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="conferenceStart != null">
+        #{conferenceStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conferenceEnd != null">
+        #{conferenceEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomStatus != null">
+        #{roomStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ximingxing.blog.server.pojo.Record">
+    update conf_record
+    <set>
+      <if test="roomId != null">
+        room_id = #{roomId,jdbcType=INTEGER},
+      </if>
+      <if test="conferenceName != null">
+        conference_name = #{conferenceName,jdbcType=VARCHAR},
+      </if>
+      <if test="conferenceDesc != null">
+        conference_desc = #{conferenceDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="conferenceStart != null">
+        conference_start = #{conferenceStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conferenceEnd != null">
+        conference_end = #{conferenceEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomStatus != null">
+        room_status = #{roomStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where conference_id = #{conferenceId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ximingxing.blog.server.pojo.Record">
+    update conf_record
+    set room_id = #{roomId,jdbcType=INTEGER},
+      conference_name = #{conferenceName,jdbcType=VARCHAR},
+      conference_desc = #{conferenceDesc,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      conference_start = #{conferenceStart,jdbcType=TIMESTAMP},
+      conference_end = #{conferenceEnd,jdbcType=TIMESTAMP},
+      room_status = #{roomStatus,jdbcType=TINYINT}
+    where conference_id = #{conferenceId,jdbcType=INTEGER}
+  </update>
+</mapper>

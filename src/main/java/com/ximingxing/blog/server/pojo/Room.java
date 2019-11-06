@@ -7,8 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArticleWithLabelsKey {
-    private Integer articleId;
+public class Room {
+    private Integer roomId;
 
-    private Integer labelId;
+    private String roomName;
+
+    private String roomDesc;
+
+    private Integer roomNums;
+
+    private Byte roomStatus;
 }

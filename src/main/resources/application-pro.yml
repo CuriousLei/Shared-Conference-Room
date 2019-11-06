@@ -2,7 +2,7 @@ spring:
   jackson:
     default-property-inclusion: non_null # 剔除JSON中的空数据
   datasource:
-    url: jdbc:mysql://localhost:3306/share_room?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
+    url: jdbc:mysql://localhost:3306/Reboot_Blog?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
     username: root
     password: Durex1997
     driver-class-name: com.mysql.cj.jdbc.Driver

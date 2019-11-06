@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ximingxing.blog.server.dao.RoomMapper">
+  <resultMap id="BaseResultMap" type="com.ximingxing.blog.server.pojo.Room">
+    <id column="room_id" jdbcType="INTEGER" property="roomId" />
+    <result column="room_name" jdbcType="VARCHAR" property="roomName" />
+    <result column="room_desc" jdbcType="VARCHAR" property="roomDesc" />
+    <result column="room_nums" jdbcType="INTEGER" property="roomNums" />
+    <result column="room_status" jdbcType="TINYINT" property="roomStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    room_id, room_name, room_desc, room_nums, room_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sr_room
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sr_room
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ximingxing.blog.server.pojo.Room">
+    insert into sr_room (room_id, room_name, room_desc, 
+      room_nums, room_status)
+    values (#{roomId,jdbcType=INTEGER}, #{roomName,jdbcType=VARCHAR}, #{roomDesc,jdbcType=VARCHAR}, 
+      #{roomNums,jdbcType=INTEGER}, #{roomStatus,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ximingxing.blog.server.pojo.Room">
+    insert into sr_room
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roomId != null">
+        room_id,
+      </if>
+      <if test="roomName != null">
+        room_name,
+      </if>
+      <if test="roomDesc != null">
+        room_desc,
+      </if>
+      <if test="roomNums != null">
+        room_nums,
+      </if>
+      <if test="roomStatus != null">
+        room_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roomId != null">
+        #{roomId,jdbcType=INTEGER},
+      </if>
+      <if test="roomName != null">
+        #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="roomDesc != null">
+        #{roomDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="roomNums != null">
+        #{roomNums,jdbcType=INTEGER},
+      </if>
+      <if test="roomStatus != null">
+        #{roomStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ximingxing.blog.server.pojo.Room">
+    update sr_room
+    <set>
+      <if test="roomName != null">
+        room_name = #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="roomDesc != null">
+        room_desc = #{roomDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="roomNums != null">
+        room_nums = #{roomNums,jdbcType=INTEGER},
+      </if>
+      <if test="roomStatus != null">
+        room_status = #{roomStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ximingxing.blog.server.pojo.Room">
+    update sr_room
+    set room_name = #{roomName,jdbcType=VARCHAR},
+      room_desc = #{roomDesc,jdbcType=VARCHAR},
+      room_nums = #{roomNums,jdbcType=INTEGER},
+      room_status = #{roomStatus,jdbcType=TINYINT}
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </update>
+</mapper>
