@@ -69,6 +69,7 @@ mybatis:
     jdbc-type-for-null: 'null'
     # 是否打印sql语句 调试的时候可以开启
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
   type-aliases-package: com.ximingxing.blog.server.pojo
   mapper-locations: classpath:mappers/*.xml
 

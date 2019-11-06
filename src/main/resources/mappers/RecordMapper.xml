@@ -10,10 +10,11 @@
     <result column="conference_start" jdbcType="TIMESTAMP" property="conferenceStart" />
     <result column="conference_end" jdbcType="TIMESTAMP" property="conferenceEnd" />
     <result column="room_status" jdbcType="TINYINT" property="roomStatus" />
+    <result column="conference_nums" jdbcType="INTEGER" property="conferenceNums" />
   </resultMap>
   <sql id="Base_Column_List">
     conference_id, room_id, conference_name, conference_desc, user_id, conference_start, 
-    conference_end, room_status
+    conference_end, room_status, conference_nums
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -28,10 +29,12 @@
   <insert id="insert" parameterType="com.ximingxing.blog.server.pojo.Record">
     insert into conf_record (conference_id, room_id, conference_name, 
       conference_desc, user_id, conference_start, 
-      conference_end, room_status)
+      conference_end, room_status, conference_nums
+      )
     values (#{conferenceId,jdbcType=INTEGER}, #{roomId,jdbcType=INTEGER}, #{conferenceName,jdbcType=VARCHAR}, 
       #{conferenceDesc,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{conferenceStart,jdbcType=TIMESTAMP}, 
-      #{conferenceEnd,jdbcType=TIMESTAMP}, #{roomStatus,jdbcType=TINYINT})
+      #{conferenceEnd,jdbcType=TIMESTAMP}, #{roomStatus,jdbcType=TINYINT}, #{conferenceNums,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ximingxing.blog.server.pojo.Record">
     insert into conf_record
@@ -60,6 +63,9 @@
       <if test="roomStatus != null">
         room_status,
       </if>
+      <if test="conferenceNums != null">
+        conference_nums,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="conferenceId != null">
@@ -85,6 +91,9 @@
       </if>
       <if test="roomStatus != null">
         #{roomStatus,jdbcType=TINYINT},
+      </if>
+      <if test="conferenceNums != null">
+        #{conferenceNums,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -112,6 +121,9 @@
       <if test="roomStatus != null">
         room_status = #{roomStatus,jdbcType=TINYINT},
       </if>
+      <if test="conferenceNums != null">
+        conference_nums = #{conferenceNums,jdbcType=INTEGER},
+      </if>
     </set>
     where conference_id = #{conferenceId,jdbcType=INTEGER}
   </update>
@@ -123,7 +135,8 @@
       user_id = #{userId,jdbcType=INTEGER},
       conference_start = #{conferenceStart,jdbcType=TIMESTAMP},
       conference_end = #{conferenceEnd,jdbcType=TIMESTAMP},
-      room_status = #{roomStatus,jdbcType=TINYINT}
+      room_status = #{roomStatus,jdbcType=TINYINT},
+      conference_nums = #{conferenceNums,jdbcType=INTEGER}
     where conference_id = #{conferenceId,jdbcType=INTEGER}
   </update>
 </mapper>

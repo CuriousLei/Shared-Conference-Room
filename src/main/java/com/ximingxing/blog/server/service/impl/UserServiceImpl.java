@@ -5,6 +5,7 @@ import com.ximingxing.blog.server.dao.UserMapper;
 import com.ximingxing.blog.server.pojo.User;
 import com.ximingxing.blog.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServerResponse<User> login(String userName, String password) {
         User user = userMapper.selectByUsernameAndPassword(userName, password);
+        System.out.println(user);
         if (user != null) {
             return ServerResponse.createBySuccess(user);
         }

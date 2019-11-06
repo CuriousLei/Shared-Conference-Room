@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 public class User {
     private Integer userId;
 
-    private String userAlias;
-
     private String userName;
-
-    private String userPasswd;
 
     private String userDesc;
 
     private Byte userRole;
+
+    private String userAlias;
+
+    private String userPasswd;
 }
