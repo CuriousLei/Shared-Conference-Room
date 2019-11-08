@@ -1,10 +1,12 @@
 package com.ximingxing.blog.server.controller.admin;
 
+import com.ximingxing.blog.server.common.ResponseCode;
 import com.ximingxing.blog.server.common.ServerResponse;
 import com.ximingxing.blog.server.pojo.User;
 import com.ximingxing.blog.server.service.UserService;
 import com.ximingxing.blog.server.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.util.StringUtils;
@@ -32,16 +34,29 @@ public class UserController {
         if (StringUtils.isEmpty(user.getUserPasswd())) {
             ServerResponse.createByError("密码为空");
         }
-        ServerResponse<UserVo> isLogin = userService.login(user.getUserName(), user.getUserPasswd());
-        UserVo curUser = isLogin.getData();
+        ServerResponse<User> isLogin = userService.login(user.getUserName(), user.getUserPasswd());
+
+        int status = isLogin.getStatus();
+        if (ResponseCode.SUCCESS.getCode() != status) {
+            // 登陆失败
+            return ServerResponse.createByError(isLogin.getMsg());
+        }
+
+        // 登陆成功
+        User curUser = isLogin.getData();
+
         log.debug(new StringBuilder().append(curUser.getUserId()).toString());
+
         request.getSession().setAttribute(
                 new StringBuilder().append(curUser.getUserId()).toString(), curUser
         );
 
-        log.info(user.getUserName() + " 已登陆");
+        log.info(curUser.getUserName() + " 已登陆");
 
-        return isLogin;
+        // 生成VO
+        ServerResponse<UserVo> ret = ServerResponse.createBySuccess(isLogin.getMsg(), new UserVo(curUser));
+
+        return ret;
     }
 
     /**

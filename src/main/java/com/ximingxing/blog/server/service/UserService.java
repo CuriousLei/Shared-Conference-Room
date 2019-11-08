@@ -10,7 +10,7 @@ import com.ximingxing.blog.server.vo.UserVo;
  */
 public interface UserService {
 
-    ServerResponse<UserVo> login(String userName, String password);
+    ServerResponse<User> login(String userName, String password);
 
     ServerResponse<User> addUser(User user);
 

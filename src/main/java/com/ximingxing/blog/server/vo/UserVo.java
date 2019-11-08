@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserVo {
-    private Integer userId;
+    private Integer user_id;
 
-    private String userName;
+    private String user_name;
 
-    private String userDesc;
+    private String user_desc;
 
     /**
      * Vo中，角色需要从数字对应到名称
@@ -21,32 +21,32 @@ public class UserVo {
      * 2 会议室管理员
      * 5.一级用户/10.二级用户/15.三级用户
       */
-    private String userRole;
+    private String user_role;
 
-    private String userAlias;
+    private String user_alias;
 
-    private String userPasswd;
+    private String user_password;
 
     public UserVo(User user) {
-        userId = user.getUserId();
-        userName = user.getUserName();
-        userDesc = user.getUserDesc();
-        userAlias = user.getUserAlias();
+        user_id = user.getUserId();
+        user_name = user.getUserName();
+        user_desc = user.getUserDesc();
+        user_alias = user.getUserAlias();
         Byte userRoleCode = user.getUserRole();
         switch (userRoleCode) {
             case 0:
-                userAlias = "超级管理员";
+                user_role = "super admin";
                 break;
             case 2:
-                userAlias = "会议室管理员";
+                user_role = "admin";
                 break;
             case 5:
             case 10:
             case 15:
-                userAlias = "普通用户";
+                user_role = "user";
                 break;
             default:
-                userAlias = "未知人员类别";
+                user_role = "unknown";
         }
     }
 }

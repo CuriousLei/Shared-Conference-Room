@@ -5,6 +5,7 @@ import com.ximingxing.blog.server.dao.UserMapper;
 import com.ximingxing.blog.server.pojo.User;
 import com.ximingxing.blog.server.service.UserService;
 import com.ximingxing.blog.server.vo.UserVo;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -20,14 +21,13 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public ServerResponse<UserVo> login(String userName, String password) {
+    public ServerResponse<User> login(String userName, String password) {
         User user = userMapper.selectByUsernameAndPassword(userName, password);
 
-        UserVo userVo = new UserVo(user);
         System.out.println(user);
 
         if (user != null) {
-            return ServerResponse.createBySuccess(userVo);
+            return ServerResponse.createBySuccess(user);
         }
         return ServerResponse.createByError("没有用户或用户密码错误");
     }
