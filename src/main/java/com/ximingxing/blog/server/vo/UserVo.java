@@ -32,21 +32,24 @@ public class UserVo {
         user_name = user.getUserName();
         user_desc = user.getUserDesc();
         user_alias = user.getUserAlias();
-        Byte userRoleCode = user.getUserRole();
+        setUser_role(getUser_roleByUserRole(user.getUserRole()));
+    }
+
+    private String getUser_roleByUserRole(Byte userRoleCode) {
+
         switch (userRoleCode) {
             case 0:
-                user_role = "super admin";
-                break;
+                return "super admin";
             case 2:
-                user_role = "admin";
-                break;
+                return "admin";
             case 5:
             case 10:
             case 15:
-                user_role = "user";
-                break;
+                return "user";
             default:
-                user_role = "unknown";
+                return "unknown";
         }
     }
+
+
 }
