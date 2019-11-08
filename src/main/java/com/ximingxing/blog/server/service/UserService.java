@@ -10,4 +10,8 @@ import com.ximingxing.blog.server.pojo.User;
 public interface UserService {
 
     ServerResponse<User> login(String userName, String password);
+
+    ServerResponse<User> addUser(User user);
+
+    ServerResponse<String> logout(String userName);
 }

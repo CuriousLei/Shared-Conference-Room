@@ -27,4 +27,14 @@ public class UserServiceImpl implements UserService {
         }
         return ServerResponse.createByError("没有用户或用户密码错误");
     }
+
+    @Override
+    public ServerResponse<User> addUser(User user) {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<String> logout(String userName) {
+        return null;
+    }
 }
