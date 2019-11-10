@@ -71,7 +71,6 @@ public class UserController {
 
         request.getSession().removeAttribute(new StringBuilder().append(user.getUserId()).toString());
 
-        log.info(user.getUserName() + " 已注销");
         log.info("注销后 session: " + request.getSession().getAttributeNames().hashCode());
 
         return isLogout;

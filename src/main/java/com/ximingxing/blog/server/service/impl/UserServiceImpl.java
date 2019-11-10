@@ -4,10 +4,8 @@ import com.ximingxing.blog.server.common.ServerResponse;
 import com.ximingxing.blog.server.dao.UserMapper;
 import com.ximingxing.blog.server.pojo.User;
 import com.ximingxing.blog.server.service.UserService;
-import com.ximingxing.blog.server.vo.UserVo;
-import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Service;
  * Created By xxm
  */
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -39,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServerResponse<String> logout(String userName) {
-        return null;
+
+        log.info(userName + " 已注销");
+
+        return ServerResponse.createBySuccess("注销成功", userName + " 已注销");
     }
 }
