@@ -29,10 +29,10 @@ public class UserController {
     @PostMapping(value = "/login")
     public ServerResponse<UserVo> login(@RequestBody User user, HttpServletRequest request) {
         if (StringUtils.isEmpty(user.getUserName())) {
-            ServerResponse.createByError("用户名不存在");
+            return ServerResponse.createByError("用户名不存在");
         }
         if (StringUtils.isEmpty(user.getUserPasswd())) {
-            ServerResponse.createByError("密码为空");
+            return ServerResponse.createByError("密码为空");
         }
         ServerResponse<User> isLogin = userService.login(user.getUserName(), user.getUserPasswd());
 
