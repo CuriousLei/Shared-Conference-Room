@@ -4,15 +4,13 @@ import com.ximingxing.blog.server.common.ServerResponse;
 import com.ximingxing.blog.server.dao.RoomMapper;
 import com.ximingxing.blog.server.pojo.Room;
 import com.ximingxing.blog.server.service.RoomService;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +29,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@Component
 public class RoomServiceImpl implements RoomService {
 
     @Autowired
@@ -39,7 +38,16 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public ServerResponse<List<Room>> uploadFile(MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        String filePath = "C:\\RoomsTempFiles\\";
+
+        String filePath = new String();
+        String os = System.getProperty("os.name");
+        if (os.toLowerCase().startsWith("win")) {
+            String filePathDirWin = "c:\\RoomsTempFiles\\";
+            filePath = filePathDirWin;
+        } else {
+            String filePathDirMac = "/Users/RoomsTempFiles/";
+            filePath = filePathDirMac;
+        }
 
         ExistFilePath(filePath);
 
