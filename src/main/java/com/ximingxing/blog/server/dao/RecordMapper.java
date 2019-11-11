@@ -1,7 +1,9 @@
 package com.ximingxing.blog.server.dao;
 
 import com.ximingxing.blog.server.pojo.Record;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface RecordMapper {
     int deleteByPrimaryKey(Integer conferenceId);
 
