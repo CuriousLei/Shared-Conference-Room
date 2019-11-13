@@ -1,7 +1,10 @@
 package com.ximingxing.blog.server.pojo;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class Record {
     private Integer conferenceId;
 
@@ -17,7 +20,7 @@ public class Record {
 
     private Date conferenceEnd;
 
-    private Byte roomStatus;
+    private Byte roomStatus;    // 会议室的申请进程/0.申请未分配/1.已分配未开始/2.会议已经结束/3.分配失败
 
     private Integer conferenceNums;
 

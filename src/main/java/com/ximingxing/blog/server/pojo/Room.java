@@ -1,5 +1,8 @@
 package com.ximingxing.blog.server.pojo;
 
+import lombok.Data;
+
+@Data
 public class Room {
     private Integer roomId;
 
