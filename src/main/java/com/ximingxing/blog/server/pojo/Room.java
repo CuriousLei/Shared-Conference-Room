@@ -1,8 +1,12 @@
 package com.ximingxing.blog.server.pojo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Room {
     private Integer roomId;
 
@@ -13,6 +17,8 @@ public class Room {
     private Integer roomNums;
 
     private Byte roomStatus;
+
+    private Integer userId;
 
     public Integer getRoomId() {
         return roomId;
@@ -52,5 +58,13 @@ public class Room {
 
     public void setRoomStatus(Byte roomStatus) {
         this.roomStatus = roomStatus;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }
