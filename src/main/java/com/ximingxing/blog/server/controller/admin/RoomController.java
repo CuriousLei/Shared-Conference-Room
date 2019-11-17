@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -30,12 +31,14 @@ public class RoomController {
      */
     @PostMapping("/roomInfoBatchAdd")
     @ResponseBody
-    public ServerResponse<List<Room>> roomInfoBatchAdd(@RequestParam("file") MultipartFile file) {
+    public ServerResponse<List<Room>> roomInfoBatchAdd(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         if (file.isEmpty()) {
             return ServerResponse.createByError("上传文件失败");
         }
 
-        ServerResponse<List<Room>> isUpload = roomService.uploadFile(file);
+        Integer userId = (Integer)request.getSession().getAttribute("userId");
+
+        ServerResponse<List<Room>> isUpload = roomService.uploadFile(file, userId);
 
         int status = isUpload.getStatus();
         if (ResponseCode.SUCCESS.getCode() != status) {

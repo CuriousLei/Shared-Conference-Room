@@ -36,17 +36,16 @@ public class RoomServiceImpl implements RoomService {
     private RoomMapper roomMapper;
 
     @Override
-    public ServerResponse<List<Room>> uploadFile(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
+    public ServerResponse<List<Room>> uploadFile(MultipartFile file, Integer userId) {
+        String fileName;
+        fileName = file.getOriginalFilename();
 
-        String filePath = new String();
+        String filePath;
         String os = System.getProperty("os.name");
         if (os.toLowerCase().startsWith("win")) {
-            String filePathDirWin = "c:\\RoomsTempFiles\\";
-            filePath = filePathDirWin;
+            filePath = "c:\\RoomsTempFiles\\";
         } else {
-            String filePathDirMac = "/Users/RoomsTempFiles/";
-            filePath = filePathDirMac;
+            filePath = "/Users/RoomsTempFiles/";
         }
 
         ExistFilePath(filePath);
@@ -61,7 +60,7 @@ public class RoomServiceImpl implements RoomService {
             return ServerResponse.createByError("上传失败");
         }
 
-        List<Room> list = null;
+        List<Room> list;
         try {
             list = excelToRoomList(dest.getPath());
             log.info("解析文件成功");
@@ -73,6 +72,9 @@ public class RoomServiceImpl implements RoomService {
 
         log.info("list: " + list.toString());
 
+        for (Room room : list) {
+            room.setUserId(userId);
+        }
         int iCount = InsertRoomListIntoSQL(list);
 
         ServerResponse<List<Room>> ret = ServerResponse.createBySuccess("批量添加了" + iCount + "个会议室", list);
