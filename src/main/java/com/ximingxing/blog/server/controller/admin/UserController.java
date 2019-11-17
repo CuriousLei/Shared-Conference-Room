@@ -45,11 +45,9 @@ public class UserController {
         // 登陆成功
         User curUser = isLogin.getData();
 
-        log.debug(new StringBuilder().append(curUser.getUserId()).toString());
+        log.debug(String.valueOf(curUser.getUserId()));
 
-        request.getSession().setAttribute(
-                new StringBuilder().append(curUser.getUserId()).toString(), curUser
-        );
+        request.getSession().setAttribute("userId", curUser.getUserId());
 
         log.info(curUser.getUserName() + " 已登陆");
 
@@ -69,7 +67,7 @@ public class UserController {
 
         log.info("注销前 session: " + request.getSession().getAttributeNames().hashCode());
 
-        request.getSession().removeAttribute(new StringBuilder().append(user.getUserId()).toString());
+        request.getSession().removeAttribute(String.valueOf(user.getUserId()));
 
         log.info("注销后 session: " + request.getSession().getAttributeNames().hashCode());
 
