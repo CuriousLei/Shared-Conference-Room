@@ -20,11 +20,21 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
-    @GetMapping("/roomInfoBatchAdd")
-    public String roomInfoBatchAdd() {
-        return "roomInfoBatchAdd";
-    }
+    /**
+     * 查询会议室列表
+     * @param pageId 页码，每页15个
+     * @return 成功：会议室列表；失败：错误信息
+     */
+    @GetMapping("/roomInfo/page/{pageId}")
+    public ServerResponse<List<Room>> getRooms(@PathVariable Integer pageId) {
+        ServerResponse<List<Room>> ans = roomService.getRoomsByPageId(pageId);
 
+        if (ResponseCode.ERROR.getCode() != ans.getStatus()) {
+            log.info("获取会议室信息错误");
+        }
+
+        return ans;
+    }
 
     /**
      * 通过上传Excel文件的方式新增会议室

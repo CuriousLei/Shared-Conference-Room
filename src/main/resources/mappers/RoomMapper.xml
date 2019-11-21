@@ -18,6 +18,11 @@
     from sr_room
     where room_id = #{roomId,jdbcType=INTEGER}
   </select>
+  <select id="selectAll" resultType="com.ximingxing.blog.server.pojo.Room">
+    select
+    <include refid="Base_Column_List" />
+    from sr_room
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sr_room
     where room_id = #{roomId,jdbcType=INTEGER}

@@ -14,4 +14,5 @@ public interface RoomService {
 
     ServerResponse<List<Room>> uploadFile(MultipartFile multipartFile, Integer userId);
 
+    ServerResponse<List<Room>> getRoomsByPageId(Integer pageId);
 }

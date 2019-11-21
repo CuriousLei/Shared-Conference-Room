@@ -32,6 +32,8 @@ import java.util.List;
 @Component
 public class RoomServiceImpl implements RoomService {
 
+    static private int pageSize = 15;
+
     @Autowired
     private RoomMapper roomMapper;
 
@@ -87,12 +89,38 @@ public class RoomServiceImpl implements RoomService {
     }
 
     /**
+     * 获得制定页码的会议室信息列表
+     * @param pageId 给定页码
+     * @return 成功：会议室列表；失败：失败原因。
+     */
+    @Override
+    public ServerResponse<List<Room>> getRoomsByPageId(Integer pageId) {
+        List<Room> list = roomMapper.selectAll();
+
+        int maxSize = list.size();
+        int startIndex = pageId * pageSize;
+        if (startIndex > maxSize || startIndex < 0) {
+            return ServerResponse.createByError("页面错误");
+        }
+
+        int endIndex = startIndex + pageSize;
+        if (endIndex > maxSize) {
+            endIndex = maxSize;
+        }
+
+        List<Room> subList = list.subList(startIndex, endIndex);
+
+        return ServerResponse.createBySuccess("获取成功", subList);
+    }
+
+    /**
      * 插入数据库
+     *
      * @param list 会议室列表
      */
     private int InsertRoomListIntoSQL(List<Room> list) {
         int iCount = 0;
-        for (Room r : list){
+        for (Room r : list) {
             iCount += roomMapper.insertSelective(r);
         }
         return iCount;
@@ -100,6 +128,7 @@ public class RoomServiceImpl implements RoomService {
 
     /**
      * 确保路径存在
+     *
      * @param filePath 文件夹路径
      */
     private void ExistFilePath(String filePath) {
