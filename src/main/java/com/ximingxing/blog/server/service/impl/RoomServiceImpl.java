@@ -77,6 +77,11 @@ public class RoomServiceImpl implements RoomService {
         }
         int iCount = InsertRoomListIntoSQL(list);
 
+        if (0 == iCount) {
+            log.info("插入数据库失败");
+            return ServerResponse.createByError("插入数据库失败");
+        }
+
         ServerResponse<List<Room>> ret = ServerResponse.createBySuccess("批量添加了" + iCount + "个会议室", list);
         return ret;
     }
