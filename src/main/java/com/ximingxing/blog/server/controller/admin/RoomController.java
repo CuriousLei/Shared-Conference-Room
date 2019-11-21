@@ -38,6 +38,10 @@ public class RoomController {
 
         Integer userId = (Integer)request.getSession().getAttribute("userId");
 
+        if (null == userId) {
+            return ServerResponse.createByError("登陆信息错误");
+        }
+
         ServerResponse<List<Room>> isUpload = roomService.uploadFile(file, userId);
 
         int status = isUpload.getStatus();
