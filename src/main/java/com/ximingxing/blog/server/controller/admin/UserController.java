@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/users")
 @Slf4j
 public class UserController {
 
@@ -53,7 +53,6 @@ public class UserController {
 
         // 生成VO
         ServerResponse<UserVo> ret = ServerResponse.createBySuccess(isLogin.getMsg(), new UserVo(curUser));
-
         return ret;
     }
 
