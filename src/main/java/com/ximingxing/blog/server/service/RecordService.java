@@ -16,4 +16,6 @@ public interface RecordService {
     ServerResponse<List<Record>> uploadFile(MultipartFile file);
 
     ServerResponse<List<RecordVo>> getApplyResultByUserName(String userName, Integer curUserId);
+
+    ServerResponse<List<RecordVo>> getAllApplyResult(Integer curUserId);
 }

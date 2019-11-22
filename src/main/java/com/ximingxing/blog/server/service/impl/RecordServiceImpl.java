@@ -138,6 +138,45 @@ public class RecordServiceImpl implements RecordService {
         return ServerResponse.createBySuccess("查询成功", ans);
     }
 
+    @Override
+    public ServerResponse<List<RecordVo>> getAllApplyResult(Integer curUserId) {
+
+        User curUser = userMapper.selectByPrimaryKey(curUserId);
+        // 权限校验
+        if (0 != curUser.getUserRole() && 2 != curUser.getUserRole()) {
+            log.info("尝试查询申请记录，权限不够");
+            return ServerResponse.createByError("权限不够");
+        }
+        log.info("尝试查询申请记录，权限足够");
+
+        List<Record> records = recordMapper.selectAll();
+
+        if (null == records) {
+            log.info("查询失败");
+            return ServerResponse.createByError("查询失败");
+        }
+        log.info("查询成功");
+
+        List<RecordVo> ans = new ArrayList<>();
+        for (Record record : records) {
+            RecordVo recordVo = new RecordVo(record);
+            Byte roomStatus = record.getRoomStatus();
+            if (1 == roomStatus || 2 == roomStatus) {
+                // 需要添加Room信息
+                Integer roomId = record.getRoomId();
+                Room room = roomMapper.selectByPrimaryKey(roomId);
+                if (null == room) {
+                    log.info("roomId=" + roomId + " 会议室信息丢失");
+                    return ServerResponse.createByError("部分会议室信息丢失");
+                }
+                recordVo.setRoomVo(new RoomVo(room));
+            }
+            ans.add(recordVo);
+        }
+
+        return ServerResponse.createBySuccess("查询成功", ans);
+    }
+
     /**
      * 插入数据库
      *

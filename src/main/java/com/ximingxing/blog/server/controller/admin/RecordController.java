@@ -23,6 +23,21 @@ public class RecordController {
     private RecordService recordService;
 
     /**
+     * 通过所有查询会议室分配结果
+     * @return 分配结果列表
+     */
+    @GetMapping("/applyResult")
+    public ServerResponse<List<RecordVo>> getApplyResultByUserName(HttpServletRequest request) {
+        /*
+         * TODO: 获得当前用户id, 这里先写死成超级管理员
+         */
+        Integer curUserId = 1;
+
+        return recordService.getAllApplyResult(curUserId);
+    }
+
+
+    /**
      * 通过用户名查询会议室分配结果
      * @param userName 用户名
      * @return 分配结果列表
