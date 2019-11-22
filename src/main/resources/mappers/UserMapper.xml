@@ -24,10 +24,16 @@
         from sr_user
         where user_name = #{username} and user_passwd = #{passwd}
     </select>
+    <select id="selectByUserName" parameterType="map" resultType="com.ximingxing.blog.server.pojo.User">
+        select
+        <include refid="Base_Column_List"/>
+        from sr_user
+        where user_name = #{username}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sr_user
     where user_id = #{userId,jdbcType=INTEGER}
-  </delete>
+   </delete>
     <insert id="insert" parameterType="com.ximingxing.blog.server.pojo.User">
     insert into sr_user (user_id, user_name, user_desc, 
       user_role, user_alias, user_passwd

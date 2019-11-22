@@ -3,6 +3,8 @@ package com.ximingxing.blog.server.dao;
 import com.ximingxing.blog.server.pojo.Record;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface RecordMapper {
     int deleteByPrimaryKey(Integer conferenceId);
@@ -16,4 +18,6 @@ public interface RecordMapper {
     int updateByPrimaryKeySelective(Record record);
 
     int updateByPrimaryKey(Record record);
+
+    List<Record> selectByUserId(Integer userId);
 }

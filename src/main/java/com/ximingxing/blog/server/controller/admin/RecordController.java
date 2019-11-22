@@ -11,17 +11,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
 @Slf4j
+@RequestMapping("/records")
 public class RecordController {
+
     @Autowired
     private RecordService recordService;
 
-    @GetMapping("/conferBatchApply")
-    public String conferBatchApply() {
-        return "conferBatchApply";
+    /**
+     * 通过用户名查询会议室分配结果
+     * @param userName 用户名
+     * @return 分配结果列表
+     */
+    @GetMapping("/applyResult/{username}")
+    public ServerResponse<List<RecordVo>> getApplyResultByUserName(
+            @PathVariable("username") String userName,
+            HttpServletRequest request
+    ) {
+        /*
+         * TODO: 获得当前用户id, 这里先写死成超级管理员
+         */
+        Integer curUserId = 1;
+
+        return recordService.getApplyResultByUserName(userName, curUserId);
     }
 
 

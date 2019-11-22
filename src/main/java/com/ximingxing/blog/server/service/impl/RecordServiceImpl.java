@@ -2,9 +2,16 @@ package com.ximingxing.blog.server.service.impl;
 
 import com.ximingxing.blog.server.common.ServerResponse;
 import com.ximingxing.blog.server.dao.RecordMapper;
+import com.ximingxing.blog.server.dao.RoomMapper;
+import com.ximingxing.blog.server.dao.UserMapper;
 import com.ximingxing.blog.server.pojo.Record;
+import com.ximingxing.blog.server.pojo.Room;
+import com.ximingxing.blog.server.pojo.User;
 import com.ximingxing.blog.server.service.RecordService;
+import com.ximingxing.blog.server.utils.UserUtils;
 import com.ximingxing.blog.server.utils.XSSFDateUtil;
+import com.ximingxing.blog.server.vo.RecordVo;
+import com.ximingxing.blog.server.vo.RoomVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -35,6 +42,12 @@ public class RecordServiceImpl implements RecordService {
 
     @Autowired
     private RecordMapper recordMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private RoomMapper roomMapper;
 
     @Override
     public ServerResponse<List<Record>> uploadFile(MultipartFile file) {
@@ -76,6 +89,53 @@ public class RecordServiceImpl implements RecordService {
 
         ServerResponse<List<Record>> ret = ServerResponse.createBySuccess("批量添加了" + iCount + "个申请", list);
         return ret;
+    }
+
+    /**
+     * 通过用户名获取申请列表
+     *
+     * @param userName  用户名
+     * @param curUserId 当前用户id
+     * @return 成功：userName的所有申请记录；失败：失败原因
+     */
+    @Override
+    public ServerResponse<List<RecordVo>> getApplyResultByUserName(String userName, Integer curUserId) {
+
+        User aimUser = userMapper.selectByUserName(userName);
+        User curUser = userMapper.selectByPrimaryKey(curUserId);
+        // 权限校验
+        if (!UserUtils.roleTest(aimUser, curUser)) {
+            log.info("尝试查询申请记录，权限不够");
+            return ServerResponse.createByError("权限不够");
+        }
+        log.info("尝试查询申请记录，权限足够");
+
+        List<Record> records = recordMapper.selectByUserId(aimUser.getUserId());
+
+        if (null == records) {
+            log.info("查询失败");
+            return ServerResponse.createByError("查询失败");
+        }
+        log.info("查询成功");
+
+        List<RecordVo> ans = new ArrayList<RecordVo>();
+        for (Record record : records) {
+            RecordVo recordVo = new RecordVo(record);
+            Byte roomStatus = record.getRoomStatus();
+            if (1 == roomStatus || 2 == roomStatus) {
+                // 需要添加Room信息
+                Integer roomId = record.getRoomId();
+                Room room = roomMapper.selectByPrimaryKey(roomId);
+                if (null == room) {
+                    log.info("roomId=" + roomId + " 会议室信息丢失");
+                    return ServerResponse.createByError("部分会议室信息丢失");
+                }
+                recordVo.setRoomVo(new RoomVo(room));
+            }
+            ans.add(recordVo);
+        }
+
+        return ServerResponse.createBySuccess("查询成功", ans);
     }
 
     /**
@@ -152,8 +212,8 @@ public class RecordServiceImpl implements RecordService {
                     String startString = sdf.format(HSSFDateUtil.getJavaDate(row.getCell(3).getNumericCellValue()));
                     String endString = sdf.format(HSSFDateUtil.getJavaDate(row.getCell(4).getNumericCellValue()));
 
-                    Date start = transStringToDate(dataString + "-" + startString,"yyyy/MM/dd-hh:mm:ss");
-                    Date end = transStringToDate(dataString + "-" + endString,"yyyy/MM/dd-hh:mm:ss");
+                    Date start = transStringToDate(dataString + "-" + startString, "yyyy/MM/dd-hh:mm:ss");
+                    Date end = transStringToDate(dataString + "-" + endString, "yyyy/MM/dd-hh:mm:ss");
 
                     record.setConferenceStart(start);
                     record.setConferenceEnd(end);

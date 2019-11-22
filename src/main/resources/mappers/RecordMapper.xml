@@ -22,6 +22,12 @@
     from conf_record
     where conference_id = #{conferenceId,jdbcType=INTEGER}
   </select>
+  <select id="selectByUserId" resultType="com.ximingxing.blog.server.pojo.Record">
+    select
+    <include refid="Base_Column_List" />
+    from conf_record
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from conf_record
     where conference_id = #{conferenceId,jdbcType=INTEGER}

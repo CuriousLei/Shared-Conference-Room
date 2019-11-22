@@ -1,6 +1,7 @@
 package com.ximingxing.blog.server.vo;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ximingxing.blog.server.pojo.Room;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,17 +11,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RoomVo {
 
+    @JsonProperty("room_id")
     private Integer roomId;
 
-    @JsonAlias("room_name")
+    @JsonProperty("room_name")
     private String roomName;
 
-    @JsonAlias("room_desc")
+    @JsonProperty("room_desc")
     private String roomDesc;
 
-    @JsonAlias("room_nums")
+    @JsonProperty("room_nums")
     private Integer roomNums;
 
-    private Byte roomStatus;
+    @JsonProperty("room_status")
+    private String roomStatus;
 
+    public RoomVo(Room room) {
+        setRoomId(room.getRoomId());
+        setRoomName(room.getRoomName());
+        setRoomDesc(room.getRoomDesc());
+        setRoomNums(room.getRoomNums());
+        switch (room.getRoomStatus()) {
+            case 0: setRoomStatus("该会议室授权可用");
+            break;
+            case 1: setRoomStatus("该会议室暂时不可使用");
+        }
+    }
 }
