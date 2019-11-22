@@ -12,9 +12,25 @@
     <result column="room_status" jdbcType="TINYINT" property="roomStatus" />
     <result column="conference_nums" jdbcType="INTEGER" property="conferenceNums" />
   </resultMap>
+  <resultMap id="RecordVoWithUserAlias" type="com.ximingxing.blog.server.vo.RecordVo">
+    <id column="conference_id" jdbcType="INTEGER" property="conferenceId" />
+    <result column="room_id" jdbcType="INTEGER" property="roomId" />
+    <result column="conference_name" jdbcType="VARCHAR" property="conferenceName" />
+    <result column="conference_desc" jdbcType="VARCHAR" property="conferenceDesc" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="conference_start" jdbcType="TIMESTAMP" property="conferenceStart" />
+    <result column="conference_end" jdbcType="TIMESTAMP" property="conferenceEnd" />
+    <result column="room_status" jdbcType="TINYINT" property="roomStatus" />
+    <result column="conference_nums" jdbcType="INTEGER" property="conferenceNums" />
+    <result column="user_alias" jdbcType="VARCHAR" property="userAlias" />
+  </resultMap>
   <sql id="Base_Column_List">
     conference_id, room_id, conference_name, conference_desc, user_id, conference_start, 
     conference_end, room_status, conference_nums
+  </sql>
+  <sql id="RecordVo_Column_List">
+    conference_id, room_id, conference_name, conference_desc, sr_user.user_id, conference_start,
+    conference_end, room_status, conference_nums, user_alias
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -28,10 +44,11 @@
     from conf_record
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultType="com.ximingxing.blog.server.pojo.Record">
+  <select id="selectAll" resultType="com.ximingxing.blog.server.vo.RecordVo">
     select
-    <include refid="Base_Column_List" />
-    from conf_record
+    <include refid="RecordVo_Column_List" />
+    from conf_record inner join sr_user
+    where conf_record.user_id = sr_user.user_id
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from conf_record

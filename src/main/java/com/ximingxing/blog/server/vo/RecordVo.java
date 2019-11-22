@@ -29,6 +29,9 @@ public class RecordVo {
     @JsonProperty("user_id")
     private Integer userId;
 
+    @JsonProperty("user_alias")
+    private String userAlias;
+
     @JsonProperty("conf_start")
     @JsonFormat(pattern = "yyyy/MM/dd-HH:mm:ss", timezone = "GMT+8")
     private Date conferenceStart;

@@ -149,7 +149,7 @@ public class RecordServiceImpl implements RecordService {
         }
         log.info("尝试查询申请记录，权限足够");
 
-        List<Record> records = recordMapper.selectAll();
+        List<RecordVo> records = recordMapper.selectAll();
 
         if (null == records) {
             log.info("查询失败");
@@ -157,13 +157,11 @@ public class RecordServiceImpl implements RecordService {
         }
         log.info("查询成功");
 
-        List<RecordVo> ans = new ArrayList<>();
-        for (Record record : records) {
-            RecordVo recordVo = new RecordVo(record);
-            Byte roomStatus = record.getRoomStatus();
+        for (RecordVo recordVo : records) {
+            Byte roomStatus = recordVo.getRoomStatus();
             if (1 == roomStatus || 2 == roomStatus) {
                 // 需要添加Room信息
-                Integer roomId = record.getRoomId();
+                Integer roomId = recordVo.getRoomId();
                 Room room = roomMapper.selectByPrimaryKey(roomId);
                 if (null == room) {
                     log.info("roomId=" + roomId + " 会议室信息丢失");
@@ -171,10 +169,9 @@ public class RecordServiceImpl implements RecordService {
                 }
                 recordVo.setRoomVo(new RoomVo(room));
             }
-            ans.add(recordVo);
         }
 
-        return ServerResponse.createBySuccess("查询成功", ans);
+        return ServerResponse.createBySuccess("查询成功", records);
     }
 
     /**
