@@ -18,4 +18,6 @@ public interface RoomService {
     ServerResponse<List<Room>> getRoomsByPageId(Integer pageId);
 
     ServerResponse<Room> updateRoom(RoomVo roomVo, Integer roomId, Integer curUserRole);
+
+    ServerResponse<Room> deleteRoom(Integer roomId, Integer curUserId);
 }

@@ -73,9 +73,20 @@ public class RoomController {
         /*
          * TODO: 获得当前用户id, 这里先写死成超级管理员
          */
-        Integer curUserId = 2;
+        Integer curUserId = 1;
 
         return roomService.updateRoom(roomVo, roomId, curUserId);
+    }
+
+    @DeleteMapping("/roomInfo/{roomId}")
+    public ServerResponse<Room> deleteRoom(@PathVariable Integer roomId, HttpServletRequest request) {
+
+        /*
+         * TODO: 获得当前用户id, 这里先写死成超级管理员
+         */
+        Integer curUserId = 1;
+
+        return roomService.deleteRoom(roomId, curUserId);
     }
 
 }

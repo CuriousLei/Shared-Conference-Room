@@ -9,7 +9,6 @@ import com.ximingxing.blog.server.pojo.User;
 import com.ximingxing.blog.server.service.RoomService;
 import com.ximingxing.blog.server.utils.UserUtils;
 import com.ximingxing.blog.server.vo.RoomVo;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -154,6 +153,35 @@ public class RoomServiceImpl implements RoomService {
         log.info("写入数据库成功");
 
         return ServerResponse.createBySuccess("更新成功");
+    }
+
+    /**
+     * 删除会议室
+     * @param roomId 会议室id
+     * @param curUserId 删除者id
+     * @return 成功：已删除的Room；失败：失败原因
+     */
+    @Override
+    public ServerResponse<Room> deleteRoom(Integer roomId, Integer curUserId) {
+        Room room = roomMapper.selectByPrimaryKey(roomId);
+        User curUser = userMapper.selectByPrimaryKey(curUserId);
+        User uploadUser = userMapper.selectByPrimaryKey(room.getUserId());
+        // 权限校验
+        if (!UserUtils.roleTest(uploadUser, curUser)) {
+            log.info("尝试删除会议室，权限不够");
+            return ServerResponse.createByError("权限不够");
+        }
+        log.info("尝试删除会议室，权限足够");
+
+        int ret = roomMapper.deleteByPrimaryKey(roomId);
+
+        if (0 == ret) {
+            log.info("写入数据库失败");
+            ServerResponse.createByError("写入数据库失败");
+        }
+        log.info("写入数据库成功");
+
+        return ServerResponse.createBySuccess("删除成功", room);
     }
 
     /**
