@@ -1,9 +1,14 @@
 package com.ximingxing.blog.server.service.impl;
 
+import com.ximingxing.blog.server.common.Constant;
 import com.ximingxing.blog.server.common.ServerResponse;
 import com.ximingxing.blog.server.dao.RoomMapper;
+import com.ximingxing.blog.server.dao.UserMapper;
 import com.ximingxing.blog.server.pojo.Room;
+import com.ximingxing.blog.server.pojo.User;
 import com.ximingxing.blog.server.service.RoomService;
+import com.ximingxing.blog.server.utils.UserUtils;
+import com.ximingxing.blog.server.vo.RoomVo;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -32,10 +37,11 @@ import java.util.List;
 @Component
 public class RoomServiceImpl implements RoomService {
 
-    static private int pageSize = 15;
-
     @Autowired
     private RoomMapper roomMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public ServerResponse<List<Room>> uploadFile(MultipartFile file, Integer userId) {
@@ -98,12 +104,12 @@ public class RoomServiceImpl implements RoomService {
         List<Room> list = roomMapper.selectAll();
 
         int maxSize = list.size();
-        int startIndex = pageId * pageSize;
+        int startIndex = pageId * Constant.PAGESIZE;
         if (startIndex > maxSize || startIndex < 0) {
             return ServerResponse.createByError("页面错误");
         }
 
-        int endIndex = startIndex + pageSize;
+        int endIndex = startIndex + Constant.PAGESIZE;
         if (endIndex > maxSize) {
             endIndex = maxSize;
         }
@@ -111,6 +117,43 @@ public class RoomServiceImpl implements RoomService {
         List<Room> subList = list.subList(startIndex, endIndex);
 
         return ServerResponse.createBySuccess("获取成功", subList);
+    }
+
+
+    /**
+     * 修改会议室信息
+     * @param roomVo 更新的数据源
+     * @param roomId 待修改会议室id
+     * @param curUserId 修改者role
+     * @return 成功：更新后的Room；失败：失败原因
+     */
+    @Override
+    public ServerResponse<Room> updateRoom(RoomVo roomVo, Integer roomId, Integer curUserId) {
+        Room room = roomMapper.selectByPrimaryKey(roomId);
+        User curUser = userMapper.selectByPrimaryKey(curUserId);
+        User uploadUser = userMapper.selectByPrimaryKey(room.getUserId());
+        // 权限校验
+        if (!UserUtils.roleTest(uploadUser, curUser)) {
+            log.info("尝试修改会议室，权限不够");
+            return ServerResponse.createByError("权限不够");
+        }
+        log.info("尝试修改会议室，权限足够");
+
+        // 更新数据
+        room.setRoomName(roomVo.getRoomName());
+        room.setRoomDesc(roomVo.getRoomDesc());
+        room.setRoomNums(roomVo.getRoomNums());
+
+        // 更新数据库
+        int ret = roomMapper.updateByPrimaryKey(room);
+
+        if (0 == ret) {
+            log.info("写入数据库失败");
+            ServerResponse.createByError("写入数据库失败");
+        }
+        log.info("写入数据库成功");
+
+        return ServerResponse.createBySuccess("更新成功");
     }
 
     /**

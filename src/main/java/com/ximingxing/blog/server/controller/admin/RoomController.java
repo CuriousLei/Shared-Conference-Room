@@ -4,6 +4,7 @@ import com.ximingxing.blog.server.common.ResponseCode;
 import com.ximingxing.blog.server.common.ServerResponse;
 import com.ximingxing.blog.server.pojo.Room;
 import com.ximingxing.blog.server.service.RoomService;
+import com.ximingxing.blog.server.vo.RoomVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -66,5 +67,15 @@ public class RoomController {
         return isUpload;
     }
 
+    @PutMapping("/roomInfo/{roomId}")
+    public ServerResponse<Room> updateRoom(@RequestBody RoomVo roomVo, @PathVariable Integer roomId, HttpServletRequest request) {
+
+        /*
+         * TODO: 获得当前用户id, 这里先写死成超级管理员
+         */
+        Integer curUserId = 2;
+
+        return roomService.updateRoom(roomVo, roomId, curUserId);
+    }
 
 }
