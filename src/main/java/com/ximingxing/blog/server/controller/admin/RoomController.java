@@ -78,6 +78,12 @@ public class RoomController {
         return roomService.updateRoom(roomVo, roomId, curUserId);
     }
 
+    /**
+     * 通过id删除会议室，仅标记会议室不可用
+     * @param roomId 会议室id
+     * @param request req
+     * @return 该会议室信息
+     */
     @DeleteMapping("/roomInfo/{roomId}")
     public ServerResponse<Room> deleteRoom(@PathVariable Integer roomId, HttpServletRequest request) {
 

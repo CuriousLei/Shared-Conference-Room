@@ -173,7 +173,8 @@ public class RoomServiceImpl implements RoomService {
         }
         log.info("尝试删除会议室，权限足够");
 
-        int ret = roomMapper.deleteByPrimaryKey(roomId);
+        room.setRoomStatus((byte)1);
+        int ret = roomMapper.updateByPrimaryKeySelective(room);
 
         if (0 == ret) {
             log.info("写入数据库失败");
