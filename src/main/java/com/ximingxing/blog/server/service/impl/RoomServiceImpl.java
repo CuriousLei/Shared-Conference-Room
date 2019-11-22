@@ -7,6 +7,7 @@ import com.ximingxing.blog.server.dao.UserMapper;
 import com.ximingxing.blog.server.pojo.Room;
 import com.ximingxing.blog.server.pojo.User;
 import com.ximingxing.blog.server.service.RoomService;
+import com.ximingxing.blog.server.utils.RoomUtils;
 import com.ximingxing.blog.server.utils.UserUtils;
 import com.ximingxing.blog.server.vo.RoomVo;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class RoomServiceImpl implements RoomService {
     private UserMapper userMapper;
 
     @Override
-    public ServerResponse<List<Room>> uploadFile(MultipartFile file, Integer userId) {
+    public ServerResponse<List<RoomVo>> uploadFile(MultipartFile file, Integer userId) {
         String fileName;
         fileName = file.getOriginalFilename();
 
@@ -89,8 +90,7 @@ public class RoomServiceImpl implements RoomService {
             return ServerResponse.createByError("插入数据库失败");
         }
 
-        ServerResponse<List<Room>> ret = ServerResponse.createBySuccess("批量添加了" + iCount + "个会议室", list);
-        return ret;
+        return ServerResponse.createBySuccess("批量添加了" + iCount + "个会议室", RoomUtils.roomVoList(list));
     }
 
     /**
@@ -99,7 +99,7 @@ public class RoomServiceImpl implements RoomService {
      * @return 成功：会议室列表；失败：失败原因。
      */
     @Override
-    public ServerResponse<List<Room>> getRoomsByPageId(Integer pageId) {
+    public ServerResponse<List<RoomVo>> getRoomsByPageId(Integer pageId) {
         List<Room> list = roomMapper.selectAll();
 
         int maxSize = list.size();
@@ -113,9 +113,7 @@ public class RoomServiceImpl implements RoomService {
             endIndex = maxSize;
         }
 
-        List<Room> subList = list.subList(startIndex, endIndex);
-
-        return ServerResponse.createBySuccess("获取成功", subList);
+        return ServerResponse.createBySuccess("获取成功", RoomUtils.roomVoList(list.subList(startIndex, endIndex)));
     }
 
 
@@ -127,7 +125,7 @@ public class RoomServiceImpl implements RoomService {
      * @return 成功：更新后的Room；失败：失败原因
      */
     @Override
-    public ServerResponse<Room> updateRoom(RoomVo roomVo, Integer roomId, Integer curUserId) {
+    public ServerResponse<RoomVo> updateRoom(RoomVo roomVo, Integer roomId, Integer curUserId) {
         Room room = roomMapper.selectByPrimaryKey(roomId);
         User curUser = userMapper.selectByPrimaryKey(curUserId);
         User uploadUser = userMapper.selectByPrimaryKey(room.getUserId());
@@ -152,7 +150,7 @@ public class RoomServiceImpl implements RoomService {
         }
         log.info("写入数据库成功");
 
-        return ServerResponse.createBySuccess("更新成功");
+        return ServerResponse.createBySuccess("更新成功", new RoomVo(room));
     }
 
     /**
@@ -162,7 +160,7 @@ public class RoomServiceImpl implements RoomService {
      * @return 成功：已删除的Room；失败：失败原因
      */
     @Override
-    public ServerResponse<Room> deleteRoom(Integer roomId, Integer curUserId) {
+    public ServerResponse<RoomVo> deleteRoom(Integer roomId, Integer curUserId) {
         Room room = roomMapper.selectByPrimaryKey(roomId);
         User curUser = userMapper.selectByPrimaryKey(curUserId);
         User uploadUser = userMapper.selectByPrimaryKey(room.getUserId());
@@ -182,7 +180,7 @@ public class RoomServiceImpl implements RoomService {
         }
         log.info("写入数据库成功");
 
-        return ServerResponse.createBySuccess("删除成功", room);
+        return ServerResponse.createBySuccess("删除成功", new RoomVo(room));
     }
 
     /**

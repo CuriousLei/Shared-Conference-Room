@@ -26,6 +26,9 @@ public class RoomVo {
     @JsonProperty("room_status")
     private String roomStatus;
 
+    @JsonProperty("user_id")
+    private Integer userId;
+
     public RoomVo(Room room) {
         setRoomId(room.getRoomId());
         setRoomName(room.getRoomName());
@@ -37,4 +40,5 @@ public class RoomVo {
             case 1: setRoomStatus("该会议室暂时不可使用");
         }
     }
+
 }
