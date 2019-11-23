@@ -66,7 +66,7 @@ public class RecordController {
             return ServerResponse.createByError("上传文件失败");
         }
 
-        ServerResponse<List<Record>> isUpload = recordService.uploadFile(file);
+        ServerResponse<List<Record>> isUpload = recordService.uploadBatchApply(file);
 
         int status = isUpload.getStatus();
         if (ResponseCode.SUCCESS.getCode() != status) {
@@ -76,11 +76,8 @@ public class RecordController {
 
         // 上传成功
 
-        // 生成VO
-        ServerResponse<List<RecordVo>> ret = ServerResponse.createBySuccess(isUpload.getMsg(),
+        return ServerResponse.createBySuccess(isUpload.getMsg(),
                 DozerUtils.mapList(isUpload.getData(), RecordVo.class));
-
-        return ret;
     }
 
 
