@@ -67,6 +67,7 @@ public class StaffServiceImpl implements StaffService {
 
         Date now = GeneralUtils.transStringToDate(GeneralUtils.getCurrentDate("yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
         staff.setStaffCheckintime(now);
+        staff.setStaffStatus((byte) 1);
         int iCount = staffMapper.updateByPrimaryKeySelective(staff);
         if (0 == iCount) {
             return ServerResponse.createByError("签到失败");
