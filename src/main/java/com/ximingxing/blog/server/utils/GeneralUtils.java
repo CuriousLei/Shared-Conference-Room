@@ -15,7 +15,7 @@ public class GeneralUtils {
      * @param s 时间格式，例如"yyyy-MM-dd_HH-mm-ss"
      * @return 当前时间字符串
      */
-    public static String getCurrentData(String s) {
+    public static String getCurrentDate(String s) {
         LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(s);
         return dateTime.format(formatter);
@@ -31,6 +31,11 @@ public class GeneralUtils {
             e.printStackTrace();
         }
         return date;
+    }
+
+    public static String transDataToString(Date date, String formatString) {
+        SimpleDateFormat sdf = new SimpleDateFormat(formatString);
+        return sdf.format(date);
     }
 
 }

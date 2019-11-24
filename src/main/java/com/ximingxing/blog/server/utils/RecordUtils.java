@@ -41,7 +41,7 @@ public class RecordUtils {
 
         RecordUtils.isExistFilePath(filePath);
 
-        File dest = new File(filePath + GeneralUtils.getCurrentData("yyyy-MM-dd_HH-mm-ss") + fileName);
+        File dest = new File(filePath + GeneralUtils.getCurrentDate("yyyy-MM-dd_HH-mm-ss") + fileName);
 
         try {
             file.transferTo(dest);

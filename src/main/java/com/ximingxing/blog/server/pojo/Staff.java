@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,4 +19,6 @@ public class Staff {
     private String staffDesc;
 
     private Byte staffStatus;
+
+    private Date staffCheckintime;
 }
