@@ -11,6 +11,7 @@ import com.ximingxing.blog.server.pojo.Room;
 import com.ximingxing.blog.server.pojo.Staff;
 import com.ximingxing.blog.server.pojo.User;
 import com.ximingxing.blog.server.service.RecordService;
+import com.ximingxing.blog.server.utils.GeneralUtils;
 import com.ximingxing.blog.server.utils.RecordUtils;
 import com.ximingxing.blog.server.utils.StaffUtils;
 import com.ximingxing.blog.server.utils.UserUtils;
@@ -74,7 +75,7 @@ public class RecordServiceImpl implements RecordService {
         }
         log.info("查询成功");
 
-        List<RecordVo> ans = new ArrayList<RecordVo>();
+        List<RecordVo> ans = new ArrayList<>();
         for (Record record : records) {
             RecordVo recordVo = new RecordVo(record);
             Byte roomStatus = record.getRoomStatus();
@@ -135,7 +136,7 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public ServerResponse<List<Record>> uploadBatchApply(MultipartFile file) {
-        File dest = RecordUtils.uploadFile(file);
+        File dest = GeneralUtils.uploadFile(file);
         if (null == dest) {
             return ServerResponse.createByError("上传失败");
         }
@@ -154,7 +155,7 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public ServerResponse<RecordVo> applyRoom(Record record, MultipartFile file) {
-        File dest = RecordUtils.uploadFile(file);
+        File dest = GeneralUtils.uploadFile(file);
         if (null == dest) {
             return ServerResponse.createByError("上传失败");
         }

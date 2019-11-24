@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,7 +30,7 @@ public class StaffVo {
 
         setStaffStatus(staff.getStaffStatus() == 0 ? "unattended" : "attended");
         if (1 == staff.getStaffStatus()) {
-            setStaffCheckintime(GeneralUtils.transDataToString(staff.getStaffCheckintime(), "yyyy-MM-dd HH:mm:ss"));
+            setStaffCheckintime(GeneralUtils.transDateToString(staff.getStaffCheckintime(), "yyyy-MM-dd HH:mm:ss"));
         }
     }
 }

@@ -7,7 +7,6 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,38 +20,6 @@ import java.util.TimeZone;
 
 @Slf4j
 public class RecordUtils {
-
-    /**
-     * 上传文件到默认路径
-     *
-     * @param file 前端传入文件
-     * @return 成功：本地文件引用；失败：null
-     */
-    public static File uploadFile(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-
-        String filePath;
-        String os = System.getProperty("os.name");
-        if (os.toLowerCase().startsWith("win")) {
-            filePath = "c:\\RoomsTempFiles\\";
-        } else {
-            filePath = System.getProperty("user.dir") + "\\RoomsTempFiles\\";
-        }
-
-        RecordUtils.isExistFilePath(filePath);
-
-        File dest = new File(filePath + GeneralUtils.getCurrentDate("yyyy-MM-dd_HH-mm-ss") + fileName);
-
-        try {
-            file.transferTo(dest);
-        } catch (IOException e) {
-            log.error(e.toString(), e);
-            return null;
-        }
-
-        return dest;
-    }
-
 
     public static List<Record> analyseFileToList(File dest) {
         List<Record> list = null;

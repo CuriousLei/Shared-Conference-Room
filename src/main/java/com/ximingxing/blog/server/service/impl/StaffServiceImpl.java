@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,7 +64,8 @@ public class StaffServiceImpl implements StaffService {
             return ServerResponse.createByError("当前会议没有此人");
         }
 
-        Date now = GeneralUtils.transStringToDate(GeneralUtils.getCurrentDate("yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
+        String ps = "yyyy-MM-dd HH:mm:ss";
+        Date now = GeneralUtils.transStringToDate(GeneralUtils.getCurrentDate(ps), ps);
         staff.setStaffCheckintime(now);
         staff.setStaffStatus((byte) 1);
         int iCount = staffMapper.updateByPrimaryKeySelective(staff);
