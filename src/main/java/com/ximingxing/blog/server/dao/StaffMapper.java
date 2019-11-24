@@ -15,4 +15,8 @@ public interface StaffMapper {
     int selectLastInsertId();
 
     List<Staff> selectByConfId(Integer confId);
+
+    Staff selectByConfIdAndUserId(Integer conferenceId, Integer userId);
+
+    int updateByPrimaryKeySelective(Staff staff);
 }

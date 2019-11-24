@@ -23,4 +23,6 @@ public interface RecordMapper {
     List<Record> selectByUserId(Integer userId);
 
     List<RecordVo> selectAll();
+
+    List<Record> selectByRoomIdAndRoomStatus(Integer roomId, Integer roomStatus);
 }

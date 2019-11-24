@@ -2,6 +2,7 @@ package com.ximingxing.blog.server.controller.admin;
 
 import com.ximingxing.blog.server.common.ResponseCode;
 import com.ximingxing.blog.server.common.ServerResponse;
+import com.ximingxing.blog.server.pojo.Staff;
 import com.ximingxing.blog.server.service.StaffService;
 import com.ximingxing.blog.server.vo.StaffVo;
 import lombok.extern.slf4j.Slf4j;
@@ -41,5 +42,10 @@ public class StaffController {
 
     }
 
+    @PostMapping("/checkin/room/{roomId}/staff/{userId}")
+    public ServerResponse<Staff> checkIn(@PathVariable Integer roomId, @PathVariable Integer userId) {
+
+        return staffService.checkIn(roomId, userId);
+    }
 
 }

@@ -63,6 +63,24 @@
       </if>
     </trim>
   </insert>
+  <update id="updateByPrimaryKeySelective">
+    update sr_staff
+    <set>
+      <if test="staffName != null">
+        staff_name = #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffDesc != null">
+        staff_desc = #{staffDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="staffStatus != null">
+        staff_status = #{staffStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="staffCheckintime != null">
+        staff_checkInTime = #{staffCheckintime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where conference_id = #{conferenceId,jdbcType=INTEGER} and staff_id = #{staffId,jdbcType=INTEGER}
+  </update>
   <select id="selectLastInsertId" resultType="java.lang.Integer">
     select Last_Insert_Id()
   </select>
@@ -71,5 +89,11 @@
     <include refid="Base_Column_List" />
     from sr_staff
     where conference_id = #{conferenceId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByConfIdAndUserId" resultType="com.ximingxing.blog.server.pojo.Staff">
+    select
+    <include refid="Base_Column_List" />
+    from sr_staff
+    where conference_id = #{conferenceId,jdbcType=INTEGER} and staff_id = #{userId,jdbcType=INTEGER}
   </select>
 </mapper>

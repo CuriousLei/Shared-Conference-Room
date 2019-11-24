@@ -50,6 +50,13 @@
     from conf_record inner join sr_user
     where conf_record.user_id = sr_user.user_id
   </select>
+  <select id="selectByRoomIdAndRoomStatus" resultType="com.ximingxing.blog.server.pojo.Record">
+    select
+    <include refid="Base_Column_List" />
+    from conf_record
+    where conf_record.room_status = 1 and conf_record.room_id = #{roomId,jdbcType=INTEGER}
+    order by conference_start asc
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from conf_record
     where conference_id = #{conferenceId,jdbcType=INTEGER}
