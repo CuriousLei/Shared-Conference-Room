@@ -1,13 +1,11 @@
 package com.ximingxing.blog.server.controller.admin;
 
-import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ximingxing.blog.server.common.ResponseCode;
 import com.ximingxing.blog.server.common.ServerResponse;
 import com.ximingxing.blog.server.pojo.Record;
 import com.ximingxing.blog.server.service.RecordService;
 import com.ximingxing.blog.server.utils.DozerUtils;
-import com.ximingxing.blog.server.utils.GeneralUtils;
 import com.ximingxing.blog.server.utils.RecordUtils;
 import com.ximingxing.blog.server.vo.RecordVo;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +17,6 @@ import org.springframework.web.multipart.support.StandardMultipartHttpServletReq
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -30,6 +27,28 @@ public class RecordController {
     @Autowired
     private RecordService recordService;
 
+
+    /**
+     * 获取签到信息-会议信息
+     * @param request req
+     * @return 所有会议列表
+     */
+    @GetMapping("/conferInfo/page/{pageId}")
+    public ServerResponse<List<RecordVo>> getRecords(@PathVariable Integer pageId, HttpServletRequest request) {
+        /*
+         * TODO: 获得当前用户id, 这里先写死成超级管理员
+         */
+        Integer curUserId = 1;
+
+        ServerResponse<List<RecordVo>> ans = recordService.getRecordsByPageId(pageId);
+
+        if (ResponseCode.SUCCESS.getCode() != ans.getStatus()) {
+            log.info("获取申请信息错误");
+        }
+
+        return ans;
+
+    }
 
     /**
      * 申请会议室表单上传

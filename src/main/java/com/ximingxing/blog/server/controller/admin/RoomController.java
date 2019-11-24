@@ -29,7 +29,7 @@ public class RoomController {
     public ServerResponse<List<RoomVo>> getRooms(@PathVariable Integer pageId) {
         ServerResponse<List<RoomVo>> ans = roomService.getRoomsByPageId(pageId);
 
-        if (ResponseCode.ERROR.getCode() != ans.getStatus()) {
+        if (ResponseCode.SUCCESS.getCode() != ans.getStatus()) {
             log.info("获取会议室信息错误");
         }
 

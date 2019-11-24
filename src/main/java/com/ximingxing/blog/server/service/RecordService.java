@@ -20,4 +20,6 @@ public interface RecordService {
     ServerResponse<List<Record>> uploadBatchApply(MultipartFile file);
 
     ServerResponse<RecordVo> applyRoom(Record record, MultipartFile file);
+
+    ServerResponse<List<RecordVo>> getRecordsByPageId(Integer pageId);
 }

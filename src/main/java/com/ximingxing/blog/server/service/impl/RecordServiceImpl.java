@@ -1,5 +1,6 @@
 package com.ximingxing.blog.server.service.impl;
 
+import com.ximingxing.blog.server.common.Constant;
 import com.ximingxing.blog.server.common.ServerResponse;
 import com.ximingxing.blog.server.dao.RecordMapper;
 import com.ximingxing.blog.server.dao.RoomMapper;
@@ -112,7 +113,9 @@ public class RecordServiceImpl implements RecordService {
         }
         log.info("查询成功");
 
+
         for (RecordVo recordVo : records) {
+            RecordUtils.calcSpan(recordVo);
             Byte roomStatus = recordVo.getRoomStatus();
             if (1 == roomStatus || 2 == roomStatus) {
                 // 需要添加Room信息
@@ -181,6 +184,27 @@ public class RecordServiceImpl implements RecordService {
         log.info("插入Staff数据库成功");
 
         return ServerResponse.createBySuccess("申请会议室表单上传成功", new RecordVo(record));
+    }
+
+    @Override
+    public ServerResponse<List<RecordVo>> getRecordsByPageId(Integer pageId) {
+        List<RecordVo> list = recordMapper.selectAll();
+        for (RecordVo r : list) {
+            r = RecordUtils.calcSpan(r);
+        }
+
+        int maxSize = list.size();
+        int startIndex = pageId * Constant.PAGESIZE;
+        if (startIndex > maxSize || startIndex < 0) {
+            return ServerResponse.createByError("页面错误");
+        }
+
+        int endIndex = startIndex + Constant.PAGESIZE;
+        if (endIndex > maxSize) {
+            endIndex = maxSize;
+        }
+
+        return ServerResponse.createBySuccess("获取成功",list.subList(startIndex, endIndex));
     }
 
 

@@ -24,6 +24,7 @@ public class RecordUtils {
 
     /**
      * 上传文件到默认路径
+     *
      * @param file 前端传入文件
      * @return 成功：本地文件引用；失败：null
      */
@@ -122,12 +123,12 @@ public class RecordUtils {
                     String dataString = simpleDateFormat.format(XSSFDateUtil.getJavaDate(row.getCell(2).getNumericCellValue()));
 
                     // 转换Time类型单元格
-                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                     String startString = sdf.format(HSSFDateUtil.getJavaDate(row.getCell(3).getNumericCellValue()));
                     String endString = sdf.format(HSSFDateUtil.getJavaDate(row.getCell(4).getNumericCellValue()));
 
-                    Date start = GeneralUtils.transStringToDate(dataString + "-" + startString, "yyyy/MM/dd-hh:mm:ss");
-                    Date end = GeneralUtils.transStringToDate(dataString + "-" + endString, "yyyy/MM/dd-hh:mm:ss");
+                    Date start = GeneralUtils.transStringToDate(dataString + "-" + startString, "yyyy/MM/dd-HH:mm:ss");
+                    Date end = GeneralUtils.transStringToDate(dataString + "-" + endString, "yyyy/MM/dd-HH:mm:ss");
 
                     record.setConferenceStart(start);
                     record.setConferenceEnd(end);
@@ -156,8 +157,8 @@ public class RecordUtils {
         String[] split = recordVo.getConferenceSpan().split("-");
         String startString = split[0];
         String endString = split[1];
-        Date start = GeneralUtils.transStringToDate(recordVo.getConferenceDate() + "-" + startString, "yyyy-MM-dd-hh:mm");
-        Date end = GeneralUtils.transStringToDate(recordVo.getConferenceDate() + "-" + endString, "yyyy-MM-dd-hh:mm");
+        Date start = GeneralUtils.transStringToDate(recordVo.getConferenceDate() + "-" + startString, "yyyy-MM-dd-HH:mm");
+        Date end = GeneralUtils.transStringToDate(recordVo.getConferenceDate() + "-" + endString, "yyyy-MM-dd-HH:mm");
         record.setConferenceStart(start);
         record.setConferenceEnd(end);
 
@@ -179,4 +180,25 @@ public class RecordUtils {
         return record;
     }
 
+    public static List<RecordVo> recordVoList(List<Record> l) {
+        List<RecordVo> ans = new ArrayList<>();
+        for (Record r : l) {
+            ans.add(new RecordVo(r));
+        }
+        return ans;
+    }
+
+    // 通过start和end计算date和span
+    public static RecordVo calcSpan(RecordVo r) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String tempStart = sdf.format(r.getConferenceStart());
+        String tempEnd = sdf.format(r.getConferenceEnd());
+        String dateString = tempStart.substring(0, tempStart.indexOf('_'));
+        String startString = tempStart.substring(tempStart.indexOf('_') + 1);
+        String endString = tempEnd.substring(tempEnd.indexOf('_') + 1);
+
+        r.setConferenceDate(dateString);
+        r.setConferenceSpan(startString + '-' + endString);
+        return r;
+    }
 }
