@@ -1,7 +1,9 @@
 package com.ximingxing.blog.server.dao;
 
 import com.ximingxing.blog.server.pojo.Staff;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface StaffMapper {
     int deleteByPrimaryKey(Integer staffId);
 
@@ -14,4 +16,6 @@ public interface StaffMapper {
     int updateByPrimaryKeySelective(Staff record);
 
     int updateByPrimaryKey(Staff record);
+
+    int selectLastInsertId();
 }

@@ -3,12 +3,15 @@ package com.ximingxing.blog.server.service.impl;
 import com.ximingxing.blog.server.common.ServerResponse;
 import com.ximingxing.blog.server.dao.RecordMapper;
 import com.ximingxing.blog.server.dao.RoomMapper;
+import com.ximingxing.blog.server.dao.StaffMapper;
 import com.ximingxing.blog.server.dao.UserMapper;
 import com.ximingxing.blog.server.pojo.Record;
 import com.ximingxing.blog.server.pojo.Room;
+import com.ximingxing.blog.server.pojo.Staff;
 import com.ximingxing.blog.server.pojo.User;
 import com.ximingxing.blog.server.service.RecordService;
 import com.ximingxing.blog.server.utils.RecordUtils;
+import com.ximingxing.blog.server.utils.StaffUtils;
 import com.ximingxing.blog.server.utils.UserUtils;
 import com.ximingxing.blog.server.vo.RecordVo;
 import com.ximingxing.blog.server.vo.RoomVo;
@@ -38,6 +41,9 @@ public class RecordServiceImpl implements RecordService {
 
     @Autowired
     private RoomMapper roomMapper;
+
+    @Autowired
+    private StaffMapper staffMapper;
 
 
     /**
@@ -137,13 +143,48 @@ public class RecordServiceImpl implements RecordService {
         }
         log.info("list: " + records.toString());
 
-        int iCount = InsertRecordListIntoSQL(records);
+        int iCount = insertRecordListIntoSQL(records);
 
         return ServerResponse.createBySuccess("批量添加了" + iCount + "个申请", records);
     }
 
 
-    private int InsertRecordIntoSQL(Record record) {
+    @Override
+    public ServerResponse<RecordVo> applyRoom(Record record, MultipartFile file) {
+        File dest = RecordUtils.uploadFile(file);
+        if (null == dest) {
+            return ServerResponse.createByError("上传失败");
+        }
+
+        List<Staff> list = StaffUtils.analyseFileWithSingleTableToList(dest);
+        if (null == list) {
+            return ServerResponse.createByError("解析为空");
+        }
+
+        int iCount = insertRecordIntoSQL(record);
+        if (0 == iCount) {
+            log.info("插入Record数据库失败");
+            return ServerResponse.createByError("插入Record数据库失败");
+        }
+        log.info("插入Record数据库成功");
+
+        Integer conferenceId = getLastInsertIdOfRecord();
+        for (Staff staff : list) {
+            staff.setConferenceId(conferenceId);
+        }
+
+        int iCountStaff = insertStaffListIntoSQL(list);
+        if (0 == iCountStaff) {
+            log.info("插入Staff数据库失败");
+            return ServerResponse.createByError("插入Staff数据库失败");
+        }
+        log.info("插入Staff数据库成功");
+
+        return ServerResponse.createBySuccess("申请会议室表单上传成功", new RecordVo(record));
+    }
+
+
+    private int insertRecordIntoSQL(Record record) {
 
         if (null == record) {
             return 0;
@@ -156,12 +197,29 @@ public class RecordServiceImpl implements RecordService {
      *
      * @param list 申请列表
      */
-    private int InsertRecordListIntoSQL(List<Record> list) {
+    private int insertRecordListIntoSQL(List<Record> list) {
         int iCount = 0;
         for (Record r : list) {
             iCount += recordMapper.insertSelective(r);
         }
         return iCount;
+    }
+
+    /**
+     * 插入会议人员列表到数据库
+     * @param list 会议人员列表
+     * @return 插入成功的数量
+     */
+    private int insertStaffListIntoSQL(List<Staff> list) {
+        int iCount = 0;
+        for (Staff staff : list) {
+            iCount += staffMapper.insertSelective(staff);
+        }
+        return iCount;
+    }
+
+    private Integer getLastInsertIdOfRecord() {
+        return staffMapper.selectLastInsertId();
     }
 }
 

@@ -18,4 +18,6 @@ public interface RecordService {
     ServerResponse<List<RecordVo>> getAllApplyResult(Integer curUserId);
 
     ServerResponse<List<Record>> uploadBatchApply(MultipartFile file);
+
+    ServerResponse<RecordVo> applyRoom(Record record, MultipartFile file);
 }

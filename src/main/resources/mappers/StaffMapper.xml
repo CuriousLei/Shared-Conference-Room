@@ -17,6 +17,9 @@
     from sr_staff
     where staff_id = #{staffId,jdbcType=INTEGER}
   </select>
+  <select id="selectLastInsertId" resultType="java.lang.Integer">
+    SELECT LAST_INSERT_ID()
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sr_staff
     where staff_id = #{staffId,jdbcType=INTEGER}

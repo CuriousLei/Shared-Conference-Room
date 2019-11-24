@@ -1,6 +1,7 @@
 package com.ximingxing.blog.server.utils;
 
 import com.ximingxing.blog.server.pojo.Record;
+import com.ximingxing.blog.server.vo.RecordVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -149,6 +150,33 @@ public class RecordUtils {
         return list;
     }
 
+    public static Record transToRecordFromRecordVoWithSpan(RecordVo recordVo) {
+        Record record = transToRecordFromRecordVo(recordVo);
 
+        String[] split = recordVo.getConferenceSpan().split("-");
+        String startString = split[0];
+        String endString = split[1];
+        Date start = GeneralUtils.transStringToDate(recordVo.getConferenceDate() + "-" + startString, "yyyy-MM-dd-hh:mm");
+        Date end = GeneralUtils.transStringToDate(recordVo.getConferenceDate() + "-" + endString, "yyyy-MM-dd-hh:mm");
+        record.setConferenceStart(start);
+        record.setConferenceEnd(end);
+
+        return record;
+    }
+
+    public static Record transToRecordFromRecordVo(RecordVo recordVo) {
+        Record record = new Record();
+
+        record.setConferenceId(recordVo.getConferenceId());
+        record.setConferenceName(recordVo.getConferenceName());
+        record.setConferenceDesc(recordVo.getConferenceDesc());
+        record.setUserId(recordVo.getUserId());
+        record.setConferenceStart(recordVo.getConferenceStart());
+        record.setConferenceEnd(recordVo.getConferenceEnd());
+        record.setRoomStatus(recordVo.getRoomStatus() == null ? 0 : recordVo.getRoomStatus());
+        record.setConferenceNums(recordVo.getConferenceNums());
+
+        return record;
+    }
 
 }
