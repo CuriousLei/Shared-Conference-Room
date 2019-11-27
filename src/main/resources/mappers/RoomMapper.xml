@@ -7,9 +7,10 @@
     <result column="room_desc" jdbcType="VARCHAR" property="roomDesc" />
     <result column="room_nums" jdbcType="INTEGER" property="roomNums" />
     <result column="room_status" jdbcType="TINYINT" property="roomStatus" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
   </resultMap>
   <sql id="Base_Column_List">
-    room_id, room_name, room_desc, room_nums, room_status
+    room_id, room_name, room_desc, room_nums, room_status, user_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -17,15 +18,22 @@
     from sr_room
     where room_id = #{roomId,jdbcType=INTEGER}
   </select>
+  <select id="selectAll" resultType="com.ximingxing.blog.server.pojo.Room">
+    select
+    <include refid="Base_Column_List" />
+    from sr_room
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sr_room
     where room_id = #{roomId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ximingxing.blog.server.pojo.Room">
     insert into sr_room (room_id, room_name, room_desc, 
-      room_nums, room_status)
+      room_nums, room_status, user_id
+      )
     values (#{roomId,jdbcType=INTEGER}, #{roomName,jdbcType=VARCHAR}, #{roomDesc,jdbcType=VARCHAR}, 
-      #{roomNums,jdbcType=INTEGER}, #{roomStatus,jdbcType=TINYINT})
+      #{roomNums,jdbcType=INTEGER}, #{roomStatus,jdbcType=TINYINT}, #{userId,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ximingxing.blog.server.pojo.Room">
     insert into sr_room
@@ -45,6 +53,9 @@
       <if test="roomStatus != null">
         room_status,
       </if>
+      <if test="userId != null">
+        user_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="roomId != null">
@@ -61,6 +72,9 @@
       </if>
       <if test="roomStatus != null">
         #{roomStatus,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -79,6 +93,9 @@
       <if test="roomStatus != null">
         room_status = #{roomStatus,jdbcType=TINYINT},
       </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
     </set>
     where room_id = #{roomId,jdbcType=INTEGER}
   </update>
@@ -87,7 +104,8 @@
     set room_name = #{roomName,jdbcType=VARCHAR},
       room_desc = #{roomDesc,jdbcType=VARCHAR},
       room_nums = #{roomNums,jdbcType=INTEGER},
-      room_status = #{roomStatus,jdbcType=TINYINT}
+      room_status = #{roomStatus,jdbcType=TINYINT},
+      user_id = #{userId,jdbcType=INTEGER}
     where room_id = #{roomId,jdbcType=INTEGER}
   </update>
 </mapper>

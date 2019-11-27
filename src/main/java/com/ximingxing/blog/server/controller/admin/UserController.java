@@ -6,17 +6,14 @@ import com.ximingxing.blog.server.pojo.User;
 import com.ximingxing.blog.server.service.UserService;
 import com.ximingxing.blog.server.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/users")
 @Slf4j
 public class UserController {
 
@@ -45,17 +42,14 @@ public class UserController {
         // 登陆成功
         User curUser = isLogin.getData();
 
-        log.debug(new StringBuilder().append(curUser.getUserId()).toString());
+        log.debug(String.valueOf(curUser.getUserId()));
 
-        request.getSession().setAttribute(
-                new StringBuilder().append(curUser.getUserId()).toString(), curUser
-        );
+        request.getSession().setAttribute("userId", curUser.getUserId());
 
         log.info(curUser.getUserName() + " 已登陆");
 
         // 生成VO
         ServerResponse<UserVo> ret = ServerResponse.createBySuccess(isLogin.getMsg(), new UserVo(curUser));
-
         return ret;
     }
 
@@ -69,7 +63,7 @@ public class UserController {
 
         log.info("注销前 session: " + request.getSession().getAttributeNames().hashCode());
 
-        request.getSession().removeAttribute(new StringBuilder().append(user.getUserId()).toString());
+        request.getSession().removeAttribute(String.valueOf(user.getUserId()));
 
         log.info("注销后 session: " + request.getSession().getAttributeNames().hashCode());
 

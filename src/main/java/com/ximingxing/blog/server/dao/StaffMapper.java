@@ -1,17 +1,22 @@
 package com.ximingxing.blog.server.dao;
 
 import com.ximingxing.blog.server.pojo.Staff;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+@Mapper
 public interface StaffMapper {
-    int deleteByPrimaryKey(Integer staffId);
 
     int insert(Staff record);
 
     int insertSelective(Staff record);
 
-    Staff selectByPrimaryKey(Integer staffId);
+    int selectLastInsertId();
 
-    int updateByPrimaryKeySelective(Staff record);
+    List<Staff> selectByConfId(Integer confId);
 
-    int updateByPrimaryKey(Staff record);
+    Staff selectByConfIdAndUserId(Integer conferenceId, Integer userId);
+
+    int updateByPrimaryKeySelective(Staff staff);
 }

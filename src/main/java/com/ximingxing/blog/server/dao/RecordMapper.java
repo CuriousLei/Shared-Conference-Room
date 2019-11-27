@@ -1,7 +1,10 @@
 package com.ximingxing.blog.server.dao;
 
 import com.ximingxing.blog.server.pojo.Record;
+import com.ximingxing.blog.server.vo.RecordVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface RecordMapper {
@@ -16,4 +19,10 @@ public interface RecordMapper {
     int updateByPrimaryKeySelective(Record record);
 
     int updateByPrimaryKey(Record record);
+
+    List<Record> selectByUserId(Integer userId);
+
+    List<RecordVo> selectAll();
+
+    List<Record> selectByRoomIdAndRoomStatus(Integer roomId, Integer roomStatus);
 }

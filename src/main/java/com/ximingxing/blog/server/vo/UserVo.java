@@ -1,5 +1,6 @@
 package com.ximingxing.blog.server.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ximingxing.blog.server.pojo.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +10,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserVo {
-    private Integer user_id;
 
-    private String user_name;
+    @JsonProperty("user_id")
+    private Integer userId;
 
-    private String user_desc;
+    @JsonProperty("user_name")
+    private String userName;
+
+    @JsonProperty("user_desc")
+    private String userDesc;
+
+    @JsonProperty("user_role")
+    private String userRole;
+
+    @JsonProperty("user_alias")
+    private String userAlias;
+
+    @JsonProperty("user_password")
+    private String userPasswd;
 
     /**
      * Vo中，角色需要从数字对应到名称
@@ -21,25 +35,20 @@ public class UserVo {
      * 2 会议室管理员
      * 5.一级用户/10.二级用户/15.三级用户
       */
-    private String user_role;
-
-    private String user_alias;
-
-    private String user_password;
 
     public UserVo(User user) {
-        user_id = user.getUserId();
-        user_name = user.getUserName();
-        user_desc = user.getUserDesc();
-        user_alias = user.getUserAlias();
-        setUser_role(getUser_roleByUserRole(user.getUserRole()));
+        setUserId(user.getUserId());
+        setUserName(user.getUserName());
+        setUserDesc(user.getUserDesc());
+        setUserAlias(user.getUserAlias());
+        setUserRole(transRoleFromByteToString(user.getUserRole()));
     }
 
-    private String getUser_roleByUserRole(Byte userRoleCode) {
+    private String transRoleFromByteToString(Byte userRoleCode) {
 
         switch (userRoleCode) {
             case 0:
-                return "super admin";
+                return "superAdmin";
             case 2:
                 return "admin";
             case 5:
@@ -50,6 +59,5 @@ public class UserVo {
                 return "unknown";
         }
     }
-
 
 }

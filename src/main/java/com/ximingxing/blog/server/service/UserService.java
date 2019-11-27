@@ -2,7 +2,6 @@ package com.ximingxing.blog.server.service;
 
 import com.ximingxing.blog.server.common.ServerResponse;
 import com.ximingxing.blog.server.pojo.User;
-import com.ximingxing.blog.server.vo.UserVo;
 
 /**
  * Description:

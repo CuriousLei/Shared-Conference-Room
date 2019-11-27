@@ -3,6 +3,8 @@ package com.ximingxing.blog.server.dao;
 import com.ximingxing.blog.server.pojo.Room;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface RoomMapper {
     int deleteByPrimaryKey(Integer roomId);
@@ -16,4 +18,6 @@ public interface RoomMapper {
     int updateByPrimaryKeySelective(Room record);
 
     int updateByPrimaryKey(Room record);
+
+    List<Room> selectAll();
 }
